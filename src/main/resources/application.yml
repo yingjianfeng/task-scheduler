@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+#数据源配置www.cloudblog.site:3306
+spring:
+  datasource:
+    username: root
+    password: yingjf
+    url: jdbc:mysql://123.57.140.253:3307/task_scheduler?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#开启日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false

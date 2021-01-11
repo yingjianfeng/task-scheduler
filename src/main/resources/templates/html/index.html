@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>主页</title>
+</head>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+<body>
+<div id="app">
+  <center>
+  <li v-for="temp in data">
+    {{ temp.task_code }} |
+    {{ temp.task_name }}|
+    {{ temp.task_desc }}|
+    {{ temp.version }}|
+    {{ temp.cron }}|
+    {{ temp.process_class }}|
+    {{ temp.create_time }}|
+    {{ temp.remark }}|
+    <span @click = 'start(temp.task_code)'>启动</span>|
+    <span @click = 'stop(temp.task_code)'>关闭</span>
+  </li>
+  </center>
+</div>
+
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      data: 'Hello Vue.js!'
+    },
+    methods: {
+      getData () {
+        axios.get('http://localhost:8081/task/showList').then(response => {
+          this.data = response.data;
+       })
+      },
+      start(taskCode){
+        axios.get('http://localhost:8081/task/start/'+taskCode).then(response => {
+          alert("start.."+taskCode)
+        })
+      },
+      stop(taskCode){
+        axios.get('http://localhost:8081/task/stop/'+taskCode).then(response => {
+          alert("stop.."+taskCode)
+        })
+      }
+    },
+    created() {
+      this.getData()
+    }
+  
+  })
+</script>
+</body>
+</html>
