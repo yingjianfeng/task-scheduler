@@ -14,9 +14,12 @@ import org.springframework.stereotype.Component;
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
 @Component
-public class JobServiceImpl implements IJobService , Job {
+public  class JobServiceImpl implements IJobService , Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        System.out.println("定时任务开始执行");
+        JobDataMap jobDataMap = jobExecutionContext.getMergedJobDataMap();
     }
+
+
+
 }

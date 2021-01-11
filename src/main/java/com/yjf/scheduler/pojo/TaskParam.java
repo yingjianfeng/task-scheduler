@@ -23,5 +23,5 @@ public class TaskParam {
     String param_name;
     String param_value;
     String param_desc;
-    String ramark;
+    String remark;
 }
