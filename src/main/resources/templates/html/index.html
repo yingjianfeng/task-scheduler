@@ -4,24 +4,143 @@
   <meta charset="UTF-8">
   <title>主页</title>
 </head>
-<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+<!--<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>-->
+<!--<script type="text/javascript" src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>-->
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/index.js"></script>-->
+<!--<link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/theme-chalk/index.min.css" rel="stylesheet">-->
+<meta charset="utf-8" />
+<title></title>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.1/vue.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>-
+<!-- 1. 导入css -->
+<link href="https://cdn.bootcss.com/element-ui/2.8.2/theme-chalk/index.css" rel="stylesheet">
+<!-- 2. 引入vue和vue-router-->
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+<!-- 未使用vue路由功能可不导入 -->
+<script src="https://cdn.bootcss.com/vue-router/3.0.6/vue-router.js"></script>
+<!-- 3. 引入ElementUI组件 -->
+<script src="https://cdn.bootcss.com/element-ui/2.8.2/index.js"></script>
+<style>
+  .log{
+    width: 70%;
+    height: 500px;
+    background: #0f0a13;
+    color: #fbfbfb;
+    overflow:auto;
+    text-align:left;
+    padding-bottom: 20px;
+  }
+  li{
+    list-style-type:none;
+  }
+</style>
 <body>
 <div id="app">
-  <center>
-  <li v-for="temp in data">
-    {{ temp.task_code }} |
-    {{ temp.task_name }}|
-    {{ temp.task_desc }}|
-    {{ temp.version }}|
-    {{ temp.cron }}|
-    {{ temp.process_class }}|
-    {{ temp.create_time }}|
-    {{ temp.remark }}|
-    <span @click = 'start(temp.task_code)'>启动</span>|
-    <span @click = 'stop(temp.task_code)'>关闭</span>
-  </li>
-  </center>
+    <center>
+    <el-table
+            :data="data"
+            border
+            style="width: 74%">
+      <el-table-column
+              prop="task_code"
+              label="进程编号"
+              width="120">
+      </el-table-column>
+      <el-table-column
+              prop="task_name"
+              label="进程名"
+              width="120">
+      </el-table-column>
+      <el-table-column
+              prop="task_desc"
+              label="进程描述"
+              width="120">
+      </el-table-column>
+      <el-table-column
+              prop="version"
+              label="版本"
+              width="120">
+      </el-table-column>
+      <el-table-column
+              prop="cron"
+              label="cron表达式"
+              width="120">
+      </el-table-column>
+      <el-table-column
+              prop="process_class"
+              label="进程类"
+              width="300">
+      </el-table-column>
+      <el-table-column
+              prop="remark"
+              label="备注"
+              width="120">
+      </el-table-column>
+      <el-table-column
+              prop="state"
+              label="状态"
+              width="120">
+      </el-table-column>
+      <el-table-column
+              label="操作"
+              width="100">
+        <template slot-scope="scope">
+  
+          <el-button @click="start(scope.row.task_code)" type="text" size="small">启动</el-button>
+          <el-button @click="stop(scope.row.task_code)" type="text" size="small">关闭</el-button>
+          <el-button @click="getParams(scope.row.task_code)" type="text" size="small">查看参数</el-button>
+        </template>
+        
+      
+      </el-table-column>
+    </el-table>
+  <el-row>
+    <el-button type="danger" @click = 'openSocket()'>开启socket</el-button>
+    <el-button type="success" @click = 'addTask()'>新增进程</el-button>
+    <el-button type="primary" @click = 'getData()'>刷新</el-button>
+  </el-row>
+  
+  <el-dialog title="参数配置" :visible.sync="showParams">
+    <el-table :data="params">
+      <el-table-column property="task_code" label="进程编号" width="200"></el-table-column>
+      <el-table-column property="param_name" label="参数名" width="200"></el-table-column>
+      <el-table-column property="param_value" label="参数值" width="200"></el-table-column>
+      <el-table-column property="param_desc" label="参数描述" width="200"></el-table-column>
+    </el-table>
+  </el-dialog>
+  
+      <el-dialog title="新增进程" :visible.sync="showAdd">
+  
+        <el-form ref="task" :model="task" label-width="80px">
+          <el-form-item label="进程名">
+            <el-input v-model="task.task_name"></el-input>
+          </el-form-item>
+          <el-form-item label="进程描述">
+            <el-input v-model="task.task_desc"></el-input>
+          </el-form-item>
+          <el-form-item label="cron">
+            <el-input v-model="task.cron"></el-input>
+          </el-form-item>
+          <el-form-item label="进程类">
+            <el-input v-model="task.process_class"></el-input>
+          </el-form-item>
+          <el-form-item label="">
+            <el-button type="success" @click = 'addTask()'>新增</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+  
+      <div class="log">
+        <el-divider >请先开启socket</el-divider>
+        <li v-for='(item,index) in log'>
+          <span style="color: red"> {{ index }}-</span>
+          <span style="color: #04bdb9">{{ item.className }}</span>--
+          <span style="color: #7b49f9">{{ item.body }}</span>
+        </li>
+      </div>
+    </center>
+  
+ 
 </div>
 
 
@@ -29,7 +148,13 @@
   new Vue({
     el: '#app',
     data: {
-      data: 'Hello Vue.js!'
+      data: [],
+      executing:'executing',
+      params:[],
+      showParams:false,
+      showAdd:false,
+      task:{},
+      log:[]
     },
     methods: {
       getData () {
@@ -38,21 +163,81 @@
        })
       },
       start(taskCode){
+        console.log(taskCode);
         axios.get('http://localhost:8081/task/start/'+taskCode).then(response => {
-          alert("start.."+taskCode)
+          // alert("start.."+taskCode)
+          this.getData()
         })
+        
       },
       stop(taskCode){
         axios.get('http://localhost:8081/task/stop/'+taskCode).then(response => {
-          alert("stop.."+taskCode)
+          // alert("stop.."+taskCode)
+          this.getData()
+        })
+        
+      },
+      get(){
+        axios.get('http://localhost:8081/task/get').then(response => {
+          this.executing = response.data;
         })
       }
-    },
+      ,
+      getParams(taskCode){
+        axios.get('http://localhost:8081/task/getParams/'+taskCode).then(response => {
+          this.params = response.data;
+          this.showParams = true;
+        })
+      },
+      addTask(){
+        this.showAdd = true;
+      },
+      openSocket(){
+        console.log("socket");
+        let that = this;
+        var socket;
+        if(typeof(WebSocket) == "undefined") {
+          console.log("您的浏览器不支持WebSocket");
+        }else{
+          console.log("您的浏览器支持WebSocket");
+          //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+          // var socketUrl="ws://127.0.0.1:22599/webSocket/"+userId;
+          var socketUrl="ws://localhost:8081/webSocket/"+Math.random();
+          console.log(socketUrl);
+          if(socket!=null){
+            socket.close();
+            socket=null;
+          }
+          socket = new WebSocket(socketUrl);
+          //打开事件
+          socket.onopen = function() {
+            console.log("websocket已打开");
+            //socket.send("这是来自客户端的消息" + location.href + new Date());
+          };
+          //获得消息事件
+          socket.onmessage = function(msg) {
+            var obj =  JSON.parse(msg.data);
+            that.log.push(obj)
+            var div = document.getElementsByClassName('log')[0];
+            div.scrollTop = div.scrollHeight;
+            // that.log +=serverMsg;
+            //发现消息进入    开始处理前端触发逻辑
+          };
+          //关闭事件
+          socket.onclose = function() {
+            console.log("websocket已关闭");
+          };
+          //发生了错误事件
+          socket.onerror = function() {
+            console.log("websocket发生了错误");
+          }
+      }
+    }
+  },
     created() {
       this.getData()
     }
-  
-  })
+  } )
 </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.yjf.scheduler.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yjf.scheduler.dao.TaskInfoDao;
 import com.yjf.scheduler.pojo.TaskInfo;
 import com.yjf.scheduler.service.ITaskInfoSV;
@@ -39,5 +40,13 @@ public class TaskInfoSVImpl implements ITaskInfoSV {
         QueryWrapper wapper = new QueryWrapper();
         wapper.eq("task_code",taskCode);
         return taskInfoDao.selectOne(wapper);
+    }
+
+    @Override
+    public void updateTaskState(int taskCode, String state) throws Exception {
+        TaskInfo taskInfo =  new TaskInfo();
+        taskInfo.setState(state);
+        taskInfo.setTask_code(taskCode);
+        taskInfoDao.updateById(taskInfo);
     }
 }

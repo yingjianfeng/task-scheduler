@@ -6,22 +6,21 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 /**
- * Title: NewTask
+ * Title: SayHelloTask
  * Description: TODO
  *
  * @author yingjf
- * @date 2021/1/11 17:24
+ * @date 2021/1/12 10:55
  */
 @Slf4j
-public class NewTask extends AbstractJob {
-    public Map map = null;
+public class SayHelloTask extends AbstractJob {
     @Override
     protected void init(Map param) throws Exception {
-        this.map = param;
+
     }
 
     @Override
     protected void execute() throws Exception {
-        log.info(""+map);
+        log.info("hello");
     }
 }

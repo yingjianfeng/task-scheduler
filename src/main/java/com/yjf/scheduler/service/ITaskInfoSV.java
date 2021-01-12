@@ -17,4 +17,6 @@ public interface ITaskInfoSV {
     public List qryAll()throws Exception;
 
     public TaskInfo qryByTaskCode(int taskCode)throws Exception;
+
+    public void updateTaskState(int taskCode,String state)throws Exception;
 }

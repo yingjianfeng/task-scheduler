@@ -23,5 +23,10 @@ public class PageController {
 
         return "html/index";
     }
+    @GetMapping("/socket")
+    public String socket(){
+
+        return "html/webSocket";
+    }
 
 }

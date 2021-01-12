@@ -1,5 +1,6 @@
 package com.yjf.scheduler.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName("task_info")
 public class TaskInfo {
+    @TableId
     int task_code;
     String task_name;
     String task_desc;
@@ -31,4 +33,5 @@ public class TaskInfo {
     @JsonFormat(pattern = "yyyy-MM-dd")
     Date create_time;
     String remark;
+    String state;
 }

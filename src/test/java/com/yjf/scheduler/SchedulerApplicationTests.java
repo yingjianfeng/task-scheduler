@@ -21,4 +21,9 @@ class SchedulerApplicationTests {
         iTaskInfoSV.save(taskInfo);
     }
 
+    @Test
+    void test2() throws Exception{
+
+    }
+
 }

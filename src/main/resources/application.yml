@@ -8,6 +8,8 @@ spring:
     password: yingjf
     url: jdbc:mysql://123.57.140.253:3307/task_scheduler?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false
 
 #开启日志
 mybatis-plus:
@@ -15,3 +17,6 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: false
+
+
+
