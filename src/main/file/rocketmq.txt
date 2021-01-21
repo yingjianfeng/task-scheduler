@@ -1,0 +1,31 @@
+教程https://www.jianshu.com/p/403b8eed6116
+docker pull pangliang/rocketmq-console-ng
+
+docker run --name rmqnamesrv -d -p 9876:9876  rocketmqinc/rocketmq  sh mqnamesrv
+
+docker run --name rmqbroker -d -p 10911:10911 -p 10909:10909 -v   /docker-file/broker.conf:/opt/rocketmq-4.4.0/conf/broker.conf  --link rmqnamesrv:namesrv -e "NAMESRV_ADDR=namesrv:9876" rocketmqinc/rocketmq sh mqbroker -c  /opt/rocketmq-4.4.0/conf/broker.conf
+
+
+docker run --name rmqconsole -d -p 8080:8080 --link rmqnamesrv:namesrv -e "JAVA_OPTS=-Drocketmq.namesrv.addr=namesrv:9876"  pangliang/rocketmq-console-ng
+
+面板
+182.254.166.73
+http://182.254.166.73:8080/#/
+
+
+修改conf下的配置文件broker.conf
+vim conf/broker.conf
+增加两行配置：
+namesrvAddr=182.254.166.73:9876
+brokerIP1=182.254.166.73
+
+
+docker cp '容器的id':/opt/app.jar /opt/apps/app.jar
+docker cp /tmp/a.sh 容器ID:/root
+
+
+docker cp d881283fbd2e:/opt/rocketmq-4.4.0/conf/broker.conf    /docker-file
+docker cp     /docker-file/broker.conf  d881283fbd2e:/opt/rocketmq-4.4.0/conf/broker.conf
+docker cp     /docker-file/broker.conf  dcfee976754a:/opt/rocketmq-4.4.0/conf/broker.conf
+
+

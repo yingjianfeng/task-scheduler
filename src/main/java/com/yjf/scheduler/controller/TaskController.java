@@ -1,5 +1,6 @@
 package com.yjf.scheduler.controller;
 
+import com.yjf.scheduler.config.Log;
 import com.yjf.scheduler.pojo.TaskInfo;
 import com.yjf.scheduler.service.ITaskInfoSV;
 import com.yjf.scheduler.service.ITaskParamSV;
@@ -37,13 +38,14 @@ public class TaskController {
     ITaskParamSV iTaskParamSV;
     @Autowired
     private Scheduler scheduler;
-
+    @Log("showList")
     @GetMapping("/showList")
     public List showList() throws Exception{
         List list = iTaskInfoSV.qryAll();
         log.info("========="+list);
         return list;
     }
+    @Log("start")
     @GetMapping("/start/{taskCode}")
     public void start(@PathVariable String taskCode)throws Exception{
         try {
@@ -62,6 +64,7 @@ public class TaskController {
             e.printStackTrace();
         }
     }
+    @Log("stop")
     @GetMapping("/stop/{taskCode}")
     public void stop(@PathVariable String taskCode){
         try {
@@ -71,13 +74,14 @@ public class TaskController {
             e.printStackTrace();
         }
     }
+    @Log("get")
     @GetMapping("/get")
     public List get() throws Exception{
         StdScheduler std =  (StdScheduler)scheduler;
         List<JobExecutionContext> currentlyExecutingJobs = std.getCurrentlyExecutingJobs();
         return currentlyExecutingJobs;
     }
-
+    @Log("get")
     @GetMapping("/getParams/{taskCode}")
     public List get(@PathVariable String taskCode) throws Exception{
         return iTaskParamSV.qryByTaskCode(Integer.parseInt(taskCode));

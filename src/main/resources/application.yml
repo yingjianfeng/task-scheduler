@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 #数据源配置www.cloudblog.site:3306
 spring:
@@ -19,4 +19,8 @@ mybatis-plus:
     map-underscore-to-camel-case: false
 
 
-
+rocketmq:
+  name-server: http://182.254.166.73:9876
+  producer:
+    group: task-sheduler
+    send-message-timeout: 10000

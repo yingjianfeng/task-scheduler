@@ -1,5 +1,6 @@
 package com.yjf.scheduler.controller;
 
+import com.yjf.scheduler.config.Log;
 import com.yjf.scheduler.service.IJobService;
 import com.yjf.scheduler.service.impl.JobServiceImpl;
 import org.quartz.*;
@@ -24,7 +25,7 @@ public class UserController {
 
         return "welcome";
     }
-
+    @Log("start")
     @GetMapping("/start/{taskCode}")
     public void start(@PathVariable String taskCode){
 //        String taskCode = String.valueOf(System.currentTimeMillis());
@@ -43,7 +44,7 @@ public class UserController {
 
     @Autowired
     private Scheduler scheduler;
-
+    @Log("stop")
     @GetMapping("/stop/{taskCode}")
     public void stop(@PathVariable String taskCode){
         try {
