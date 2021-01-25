@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8081
 
 #数据源配置www.cloudblog.site:3306
 spring:

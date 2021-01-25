@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Service
 public class LogFilter extends Filter<ILoggingEvent> {
-
+//UnsynchronizedAppenderBase   也可以做日志切面
     @Override
     public FilterReply decide(ILoggingEvent event) {
         String exception = "";

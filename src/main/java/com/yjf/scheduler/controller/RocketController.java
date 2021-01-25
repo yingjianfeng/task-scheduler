@@ -1,12 +1,16 @@
 package com.yjf.scheduler.controller;
 
+import com.yjf.scheduler.config.LoggerMessage;
+import com.yjf.scheduler.config.LoggerQueue;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.DateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Title: RocketController
@@ -26,6 +30,15 @@ public class RocketController {
     public String rocketSend() {
         LocalDateTime currentTime = LocalDateTime.now();
         rocketMQTemplate.convertAndSend("rocket-topic-1", currentTime.toString());
+        LoggerMessage log =  new LoggerMessage(
+                "rocketSend"
+                , "rocketSend",
+                "rocketSend",
+                "rocketSend",
+                "rocketSend",
+                "rocketSend",
+                "rocketSend");
+        LoggerQueue.getInstance().push(log);
         return currentTime.toString();
     }
 
